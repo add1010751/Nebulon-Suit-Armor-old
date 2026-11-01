@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>內布隆防具 - 選項變換模擬器</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/webp"
+      href="https://raw.githubusercontent.com/add1010751/Nebulon-Suit-Armor/refs/heads/main/%E9%98%B2%E5%85%B7%E5%B1%AC%E6%80%A7%E8%AE%8A%E6%8F%9B%E7%9F%B3.webp">
 <style>
     :root {
         --bg-color: #121218;
@@ -78,6 +80,83 @@
         margin: 0;
         font-size: 1.2rem;
         color: #f16605; 
+    }
+
+    .item-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .item-title-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .enhancement-select {
+        margin-left: auto;
+        flex-shrink: 0;
+        background: #2a2a35;
+        color: var(--accent-color);
+        border: 1px solid #555568;
+        border-radius: 6px;
+        padding: 5px 8px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .enhancement-select:focus { outline: 1px solid var(--primary-color); }
+
+    .tooltip-wrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+    .tooltip-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--accent-color);
+        border-radius: 50%;
+        color: var(--accent-color);
+        font-size: 12px;
+        font-weight: bold;
+        cursor: help;
+    }
+    .tooltip-wrap::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        left: 50%;
+        bottom: calc(100% + 9px);
+        transform: translateX(-50%);
+        width: max-content;
+        max-width: 240px;
+        padding: 8px 10px;
+        border: 1px solid #555568;
+        border-radius: 6px;
+        background: #121218;
+        color: #e0e0e0;
+        font-size: 0.8rem;
+        font-weight: normal;
+        line-height: 1.5;
+        white-space: normal;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        z-index: 20;
+        box-shadow: 0 5px 15px rgba(0,0,0,.4);
+    }
+    .tooltip-wrap:hover::after,
+    .tooltip-wrap:focus-within::after {
+        opacity: 1;
+        visibility: visible;
     }
 
     .item-info span {
@@ -492,8 +571,33 @@
     /* 底部連結區塊 */
     .footer-links {
         margin-top: 25px;
-        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         width: 100%;
+        max-width: 900px;
+        padding: 0 2px;
+    }
+
+    .footer-left {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    .footer-separator {
+        color: #888;
+    }
+
+    .footer-updated {
+        margin-left: auto;
+        text-align: right;
+    }
+
+    .footer-updated {
+        color: #666;
+        font-size: 0.85rem;
     }
 
     .footer-links a {
@@ -523,7 +627,16 @@
         <div class="panel-header">
             <img src="https://raw.githubusercontent.com/add1010751/Nebulon-Suit-Armor/refs/heads/main/%E5%85%A7%E5%B8%83%E9%9A%86%E9%98%B2%E5%85%B7.webp" class="item-image" alt="裝備圖片">
             <div class="item-info">
-                <h2>+11 內布隆防具</h2>
+                <div class="item-title-row">
+                    <h2 id="equipment-title">+11 內布隆防具</h2>
+                    <select id="enhancement-level" class="enhancement-select" aria-label="防具強化等級">
+                        <option value="9">+9</option>
+                        <option value="10">+10</option>
+                        <option value="11" selected>+11</option>
+                        <option value="12">+12</option>
+                        <option value="13">+13</option>
+                    </select>
+                </div>
                 <span>屬性變更模擬</span>
             </div>
         </div>
@@ -547,6 +660,9 @@
                     <img src="https://raw.githubusercontent.com/add1010751/Nebulon-Suit-Armor/refs/heads/main/%E9%98%B2%E5%85%B7%E5%B1%AC%E6%80%A7%E8%AE%8A%E6%8F%9B%E7%9F%B3.webp" alt="統計圖片">
                 </div>
                 <div class="stats-title">防具屬性變換石</div>
+                <span class="tooltip-wrap" tabindex="0" role="img" aria-label="防具屬性變換石說明" data-tooltip="此版本為算出各數值增益在實際穿著[水套/兩極褲]角色上的素質評分，每個人的職業/聖獸鑑定/電路/芯片/22飾品效果皆有不同，故此分數僅供參考">
+                    <span class="tooltip-icon">?</span>
+                </span>
             </div>
 
             <div class="stat-row">
@@ -570,7 +686,7 @@
             <div class="settings-row">
                 <span>目標分數</span>
                 <div>
-                    <input id="target-score" type="number" step="0.1" value="17"> 分
+                    <input id="target-score" type="number" step="0.1" value="15"> 分
                 </div>
             </div>
         </div>
@@ -592,7 +708,7 @@
 <!-- 選項 1：屬性評分明細（預設關閉） -->
 <div class="score-accordion-panel">
     <button class="accordion-toggle-btn" onclick="toggleScoreMenu()">
-        <span>屬性評分明細 ※隨意打的分-僅供參考</span>
+        <span>屬性評分明細 ※詳細請看-Tooltip</span>
         <span id="accordion-arrow">▼</span>
     </button>
     <div id="accordion-content" class="accordion-content">
@@ -628,7 +744,12 @@
 
 <!-- 底部來源超連結 -->
 <div class="footer-links">
-    <a href="https://m.elsword.nexon.com/news/probability/354" target="_blank" rel="noopener noreferrer">機率來源</a>
+    <div class="footer-left">
+        <a class="footer-source" href="https://m.elsword.nexon.com/news/probability/354" target="_blank" rel="noopener noreferrer">機率來源</a>
+        <span class="footer-separator">｜</span>
+        <a class="footer-old" href="https://add1010751.github.io/Nebulon-Suit-Armor-old/" target="_blank" rel="noopener noreferrer">回到舊版</a>
+    </div>
+    <span class="footer-updated">最後更新日期：2026/11/01</span>
 </div>
 
 <script>
@@ -657,11 +778,36 @@ async function fetchExchangeRate() {
 
 window.onload = function() {
     fetchExchangeRate();
+    const levelSelect = document.getElementById('enhancement-level');
+    if (levelSelect) {
+        levelSelect.addEventListener('change', function() {
+            enhancementLevel = Number(this.value);
+            document.getElementById('equipment-title').textContent = `+${enhancementLevel} 內布隆防具`;
+            renderScoreRulesUI();
+            initCalc();
+            refreshDisplayedScores();
+        });
+    }
     renderScoreRulesUI(); // 頁面載入時自動渲染評分表
     initCalc();           // 頁面載入時初始化防具屬性計算器
 };
 
+function refreshDisplayedScores() {
+    const slots = document.querySelectorAll('#result .option-slot[data-option-name]');
+    let total = 0;
+    slots.forEach(slot => {
+        const name = slot.dataset.optionName;
+        const value = Number(slot.dataset.optionValue);
+        const score = getScore(name, value);
+        total += score;
+        const scoreTag = slot.querySelector('.score-tag');
+        if (scoreTag) scoreTag.textContent = `${score.toFixed(1)} 分`;
+    });
+    updateStatsUI(clickCount, total);
+}
+
 let clickCount = 0;
+let enhancementLevel = 11;
 
 const options = [
     ["防具強化數值每1，物理/魔法攻擊力", 0.02, 0.2, true, 0.833],
@@ -686,102 +832,114 @@ const options = [
 
 // 原防具 scoreTable 數據
 const scoreTable = [
-    ["防具強化數值每1，物理/魔法攻擊力", 0.2, 15],
-    ["防具強化數值每1，物理/魔法攻擊力", 0.18, 14],
-    ["防具強化數值每1，物理/魔法攻擊力", 0.16, 13.5],
-    ["防具強化數值每1，物理/魔法攻擊力", 0.14, 10],
-    ["防具強化數值每1，物理/魔法攻擊力", 0.12, 9],
-    ["防具強化數值每1，物理/魔法攻擊力", 0.1, 7.5],
-    ["防具強化數值每1，物理/魔法攻擊力", 0.08, 6.5],
-    ["防具強化數值每1，物理/魔法攻擊力", 0.06, 5],
-    ["防具強化數值每1，物理/魔法攻擊力", 0.04, 3],
-    
-    ["防具強化數值每1，致命一擊傷害", 0.2, 13],
-    ["防具強化數值每1，致命一擊傷害", 0.18, 12],
-    ["防具強化數值每1，致命一擊傷害", 0.16, 10.5],
-    ["防具強化數值每1，致命一擊傷害", 0.14, 8.5],
-    ["防具強化數值每1，致命一擊傷害", 0.12, 7.5],
-    ["防具強化數值每1，致命一擊傷害", 0.1, 6.5],
-    ["防具強化數值每1，致命一擊傷害", 0.08, 5.5],
-    ["防具強化數值每1，致命一擊傷害", 0.06, 4],
-    ["防具強化數值每1，致命一擊傷害", 0.04, 2],
-    
-    ["防具強化數值每1，所有技能傷害", 0.2, 14],
-    ["防具強化數值每1，所有技能傷害", 0.18, 13],
-    ["防具強化數值每1，所有技能傷害", 0.16, 11.5],
-    ["防具強化數值每1，所有技能傷害", 0.14, 9.5],
-    ["防具強化數值每1，所有技能傷害", 0.12, 8],
-    ["防具強化數值每1，所有技能傷害", 0.1, 7],
-    ["防具強化數值每1，所有技能傷害", 0.08, 6],
-    ["防具強化數值每1，所有技能傷害", 0.06, 4.5],
-    ["防具強化數值每1，所有技能傷害", 0.04, 2.5],
-    
-    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 1, 9],
-    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 0.9, 8],
-    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 0.8, 7],
-    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 0.7, 6],
-    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 0.6, 4.5],
-    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 0.5, 3.5],
-    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 0.4, 2],
-    
-    ["物理/魔法攻擊力", 1, 7],
-    ["物理/魔法攻擊力", 0.9, 6.5],
-    ["物理/魔法攻擊力", 0.8, 6],
-    ["物理/魔法攻擊力", 0.7, 5],
-    ["物理/魔法攻擊力", 0.6, 5],
-    ["物理/魔法攻擊力", 0.5, 4],
-    ["物理/魔法攻擊力", 0.4, 2.5],
-    
-    ["攻擊體力100%以下的敵人時，傷害增加", 1, 9.5],
-    ["攻擊體力100%以下的敵人時，傷害增加", 0.9, 9],
-    ["攻擊體力100%以下的敵人時，傷害增加", 0.8, 8.5],
-    ["攻擊體力100%以下的敵人時，傷害增加", 0.7, 7.5],
-    ["攻擊體力100%以下的敵人時，傷害增加", 0.6, 6.5],
-    ["攻擊體力100%以下的敵人時，傷害增加", 0.5, 4.5],
-    ["攻擊體力100%以下的敵人時，傷害增加", 0.4, 3.5],
-    
-    ["兩極化：攻擊/被擊傷害", 1, 9],
-    ["兩極化：攻擊/被擊傷害", 0.9, 8],
-    ["兩極化：攻擊/被擊傷害", 0.8, 7],
-    ["兩極化：攻擊/被擊傷害", 0.7, 6],
-    ["兩極化：攻擊/被擊傷害", 0.6, 4.5],
-    ["兩極化：攻擊/被擊傷害", 0.5, 3.5],
-    ["兩極化：攻擊/被擊傷害", 0.4, 2.5],
-    
-    ["致命一擊傷害", 1, 6.5],
-    ["致命一擊傷害", 0.9, 5.5],
-    ["致命一擊傷害", 0.8, 5],
-    ["致命一擊傷害", 0.7, 4.5],
-    ["致命一擊傷害", 0.6, 3],
-    ["致命一擊傷害", 0.5, 2],
-    
-    ["給予Boss傷害增加", 1, 5.5],
-    ["給予Boss傷害增加", 0.9, 5],
-    ["給予Boss傷害增加", 0.8, 4.5],
-    ["給予Boss傷害增加", 0.7, 4],
-    ["給予Boss傷害增加", 0.6, 3],
-    ["給予Boss傷害增加", 0.5, 2],
-    
-    ["強烈技能傷害增加", 1, 6],
-    ["強烈技能傷害增加", 0.9, 5.5],
-    ["強烈技能傷害增加", 0.8, 5],
-    ["強烈技能傷害增加", 0.7, 4],
-    ["強烈技能傷害增加", 0.6, 3],
-    ["強烈技能傷害增加", 0.5, 2],
-    
-    ["超越技能傷害增加", 1, 6],
-    ["超越技能傷害增加", 0.9, 5.5],
-    ["超越技能傷害增加", 0.8, 5],
-    ["超越技能傷害增加", 0.7, 4],
-    ["超越技能傷害增加", 0.6, 3],
-    ["超越技能傷害增加", 0.5, 2],
+    // 防具強化數值每1，物理/魔法攻擊力
+    ["防具強化數值每1，物理/魔法攻擊力", 0.2, 15.4],
+    ["防具強化數值每1，物理/魔法攻擊力", 0.18, 13.9],
+    ["防具強化數值每1，物理/魔法攻擊力", 0.16, 12.3],
+    ["防具強化數值每1，物理/魔法攻擊力", 0.14, 10.8],
+    ["防具強化數值每1，物理/魔法攻擊力", 0.12, 9.2],
+    ["防具強化數值每1，物理/魔法攻擊力", 0.1, 7.7],
+    ["防具強化數值每1，物理/魔法攻擊力", 0.08, 6.2],
+    ["防具強化數值每1，物理/魔法攻擊力", 0.06, 4.6],
+    ["防具強化數值每1，物理/魔法攻擊力", 0.04, 3.1],
 
-    ["所有技能傷害增加", 1, 6.5],
-    ["所有技能傷害增加", 0.9, 6],
-    ["所有技能傷害增加", 0.8, 5],
-    ["所有技能傷害增加", 0.7, 4.5],
-    ["所有技能傷害增加", 0.6, 3.5],
-    ["所有技能傷害增加", 0.5, 2.5]
+    // 防具強化數值每1，致命一擊傷害
+    ["防具強化數值每1，致命一擊傷害", 0.2, 9.9, 10.8],
+    ["防具強化數值每1，致命一擊傷害", 0.18, 8.9, 9.7],
+    ["防具強化數值每1，致命一擊傷害", 0.16, 7.9, 8.6],
+    ["防具強化數值每1，致命一擊傷害", 0.14, 6.9, 7.6],
+    ["防具強化數值每1，致命一擊傷害", 0.12, 5.9, 6.5],
+    ["防具強化數值每1，致命一擊傷害", 0.1, 5.0, 5.4],
+    ["防具強化數值每1，致命一擊傷害", 0.08, 4.0, 4.3],
+    ["防具強化數值每1，致命一擊傷害", 0.06, 3.0, 3.2],
+    ["防具強化數值每1，致命一擊傷害", 0.04, 2.0, 2.2],
+
+    // 防具強化數值每1，所有技能傷害
+    ["防具強化數值每1，所有技能傷害", 0.2, 12.5, 13.7],
+    ["防具強化數值每1，所有技能傷害", 0.18, 11.3, 12.3],
+    ["防具強化數值每1，所有技能傷害", 0.16, 10.0, 10.9],
+    ["防具強化數值每1，所有技能傷害", 0.14, 8.8, 9.6],
+    ["防具強化數值每1，所有技能傷害", 0.12, 7.5, 8.2],
+    ["防具強化數值每1，所有技能傷害", 0.1, 6.3, 6.8],
+    ["防具強化數值每1，所有技能傷害", 0.08, 5.0, 5.5],
+    ["防具強化數值每1，所有技能傷害", 0.06, 3.8, 4.1],
+    ["防具強化數值每1，所有技能傷害", 0.04, 2.5, 2.7],
+
+    // 根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害
+    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 1, 7.0],
+    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 0.9, 6.3],
+    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 0.8, 5.6],
+    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 0.7, 4.9],
+    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 0.6, 4.2],
+    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 0.5, 3.5],
+    ["根據攻擊時給予的傷害量的n%，在3秒內給予持續傷害", 0.4, 2.8],
+
+    // 物理/魔法攻擊力
+    ["物理/魔法攻擊力", 1, 7.0],
+    ["物理/魔法攻擊力", 0.9, 6.3],
+    ["物理/魔法攻擊力", 0.8, 5.6],
+    ["物理/魔法攻擊力", 0.7, 4.9],
+    ["物理/魔法攻擊力", 0.6, 4.2],
+    ["物理/魔法攻擊力", 0.5, 3.5],
+    ["物理/魔法攻擊力", 0.4, 2.8],
+
+    // 攻擊體力100%以下的敵人時，傷害增加
+    ["攻擊體力100%以下的敵人時，傷害增加", 1, 10.0],
+    ["攻擊體力100%以下的敵人時，傷害增加", 0.9, 9.0],
+    ["攻擊體力100%以下的敵人時，傷害增加", 0.8, 8.0],
+    ["攻擊體力100%以下的敵人時，傷害增加", 0.7, 7.0],
+    ["攻擊體力100%以下的敵人時，傷害增加", 0.6, 6.0],
+    ["攻擊體力100%以下的敵人時，傷害增加", 0.5, 5.0],
+    ["攻擊體力100%以下的敵人時，傷害增加", 0.4, 4.0],
+
+    // 兩極化：攻擊/被擊傷害
+    ["兩極化：攻擊/被擊傷害", 1, 7.0],
+    ["兩極化：攻擊/被擊傷害", 0.9, 6.3],
+    ["兩極化：攻擊/被擊傷害", 0.8, 5.6],
+    ["兩極化：攻擊/被擊傷害", 0.7, 4.9],
+    ["兩極化：攻擊/被擊傷害", 0.6, 4.2],
+    ["兩極化：攻擊/被擊傷害", 0.5, 3.5],
+    ["兩極化：攻擊/被擊傷害", 0.4, 2.8],
+
+    // 致命一擊傷害
+    ["致命一擊傷害", 1, 4.5],
+    ["致命一擊傷害", 0.9, 4.1],
+    ["致命一擊傷害", 0.8, 3.6],
+    ["致命一擊傷害", 0.7, 3.2],
+    ["致命一擊傷害", 0.6, 2.7],
+    ["致命一擊傷害", 0.5, 2.3],
+
+    // 給予Boss傷害增加
+    ["給予Boss傷害增加", 1, 4.5],
+    ["給予Boss傷害增加", 0.9, 4.1],
+    ["給予Boss傷害增加", 0.8, 3.6],
+    ["給予Boss傷害增加", 0.7, 3.2],
+    ["給予Boss傷害增加", 0.6, 2.7],
+    ["給予Boss傷害增加", 0.5, 2.3],
+
+    // 強烈技能傷害增加
+    ["強烈技能傷害增加", 1, 4.5],
+    ["強烈技能傷害增加", 0.9, 4.1],
+    ["強烈技能傷害增加", 0.8, 3.6],
+    ["強烈技能傷害增加", 0.7, 3.2],
+    ["強烈技能傷害增加", 0.6, 2.7],
+    ["強烈技能傷害增加", 0.5, 2.3],
+
+    // 超越技能傷害增加
+    ["超越技能傷害增加", 1, 4.5],
+    ["超越技能傷害增加", 0.9, 4.1],
+    ["超越技能傷害增加", 0.8, 3.6],
+    ["超越技能傷害增加", 0.7, 3.2],
+    ["超越技能傷害增加", 0.6, 2.7],
+    ["超越技能傷害增加", 0.5, 2.3],
+
+    // 所有技能傷害增加
+    ["所有技能傷害增加", 1, 5.7],
+    ["所有技能傷害增加", 0.9, 5.1],
+    ["所有技能傷害增加", 0.8, 4.6],
+    ["所有技能傷害增加", 0.7, 4.0],
+    ["所有技能傷害增加", 0.6, 3.4],
+    ["所有技能傷害增加", 0.5, 2.9]
 ];
 
 function wrapAction(action) {
@@ -813,17 +971,31 @@ function weightedRandom(excluded = []) {
     return options.indexOf(available[available.length - 1]);
 }
 
+function getEnhancementScoreRate(name) {
+    if (name === "防具強化數值每1，物理/魔法攻擊力") return 7;
+    if (name === "防具強化數值每1，致命一擊傷害") return 4.5;
+    if (name === "防具強化數值每1，所有技能傷害") return 5.7;
+    return null;
+}
+
 function getScore(name, value) {
+    // 強化詞條先計算「強化等級 × 洗出的每級素質」，再比照固定素質換算分數。
+    // scoreTable 第四欄完全不使用。
+    const enhancementRate = getEnhancementScoreRate(name);
+    if (enhancementRate !== null) {
+        return Math.round(value * enhancementLevel * enhancementRate * 10) / 10;
+    }
+
     let candidates = scoreTable.filter(s => s[0] === name);
     if (candidates.length === 0) return 0;
-    
+
     let validCandidates = candidates.filter(s => value >= s[1] - 0.0001);
     if (validCandidates.length === 0) return 0;
 
     let bestMatch = validCandidates.reduce((prev, curr) => {
         return (curr[1] > prev[1]) ? curr : prev;
     });
-    
+
     return bestMatch[2];
 }
 
@@ -871,6 +1043,8 @@ function getRandomOptions() {
         
         let div = document.createElement('div');
         div.className = "option-slot";
+        div.dataset.optionName = opt[0];
+        div.dataset.optionValue = val;
         
         let colorStyle = "";
         if (val === opt[1]) colorStyle = "color: var(--min-stat-color);";
@@ -910,7 +1084,7 @@ function findCustomTargetOptions() {
             else if (val === opt[2]) colorStyle = "color: var(--max-stat-color); text-shadow: 0 0 5px rgba(211, 171, 130, 0.5);"; 
 
             tempHTML += `
-                <div class="option-slot">
+                <div class="option-slot" data-option-name="${opt[0]}" data-option-value="${val}">
                     <span class="option-name" style="${colorStyle}">${formatOptionDisplay(opt[0], val)}</span>
                     <span class="score-tag">${score} 分</span>
                 </div>`;
@@ -963,9 +1137,9 @@ function renderScoreRulesUI() {
     if (!container) return;
 
     const grouped = {};
-    scoreTable.forEach(([name, val, score]) => {
+    scoreTable.forEach(([name, val]) => {
         if (!grouped[name]) grouped[name] = [];
-        grouped[name].push({ val, score });
+        grouped[name].push({ val, score: getScore(name, val) });
     });
 
     let html = '';
@@ -974,8 +1148,8 @@ function renderScoreRulesUI() {
 
         let rulesHTML = rules.map(r => `
             <div class="score-rule-item">
-                <span class="score-rule-val">${r.val}%</span>
-                <span class="score-rule-pts">${r.score} 分</span>
+                <span class="score-rule-val">${r.val}${name.startsWith("防具強化數值每1") ? "" : "%"}</span>
+                <span class="score-rule-pts">${r.score.toFixed(1)} 分</span>
             </div>
         `).join('');
 
@@ -1006,9 +1180,9 @@ function toggleCalcMenu() {
 /* 直接讀取原本的 scoreTable (防具數據) 來初始化計算機選項 */
 function initCalc() {
     const grouped = {};
-    scoreTable.forEach(([name, value, score]) => {
+    scoreTable.forEach(([name, value]) => {
         if (!grouped[name]) grouped[name] = [];
-        grouped[name].push({ value, score });
+        grouped[name].push({ value, score: getScore(name, value) });
     });
 
     const container = document.getElementById("calc-options");
@@ -1041,8 +1215,9 @@ function initCalc() {
         grouped[name].forEach(entry => {
             const opt = document.createElement("option");
             opt.value = entry.score;
+            opt.dataset.rawValue = entry.value;
             let unit = name.startsWith("防具強化數值每1") ? "" : "%";
-            opt.textContent = ` ${entry.value}${unit} ➜ ${entry.score} 分`;
+            opt.textContent = ` ${entry.value}${unit} ➜ ${entry.score.toFixed(1)} 分`;
             select.appendChild(opt);
         });
 
@@ -1063,11 +1238,11 @@ function initCalc() {
     });
 
     // 重置按鈕事件
-    document.getElementById("calcResetBtn").addEventListener("click", () => {
+    document.getElementById("calcResetBtn").onclick = () => {
         document.querySelectorAll(".calc-select").forEach(sel => sel.value = "");
         document.querySelectorAll(".calc-option-card").forEach(card => card.classList.remove("active"));
         calcTotalScore();
-    });
+    };
 }
 
 /* 計算機計算總分 */
